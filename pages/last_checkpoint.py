@@ -1,5 +1,6 @@
 import streamlit as st
 from pythaitts import TTS
+from pythainlp.tokenize import word_tokenize
 st.title("PyThaiTTS Demo")
 tts = TTS(pretrained="khanomtan", mode="last_checkpoint")
 st.markdown("""
@@ -23,6 +24,6 @@ with form:
     submitted = st.form_submit_button(label="Submit")
 
 if submitted:
-    audio_file = tts.tts(text=str(text), speaker_idx=str(speaker_idx), language_idx=str(language))
+    audio_file = tts.tts(text=' '.join(word_tokenize(str(text))).replace('  ',' '), speaker_idx=str(speaker_idx), language_idx=str(language))
     audio_bytes = open(audio_file,"rb").read()
     st.audio(audio_bytes, format='audio/wav')
